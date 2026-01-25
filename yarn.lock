@@ -437,10 +437,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@riz007/thai-address-data@npm:^0.1.1":
-  version: 0.1.1
-  resolution: "@riz007/thai-address-data@npm:0.1.1"
-  checksum: 10c0/fb3c9f2fa79ece80dfefac7e21b427e901deb8892ef8e93f7c33261903e416d432d23a9a5ba53393fd1146ad2959b6ca8ff4d06d6bb8e70c72527f9411bb0f17
+"@riz007/thai-address-data@npm:^0.1.4":
+  version: 0.1.4
+  resolution: "@riz007/thai-address-data@npm:0.1.4"
+  checksum: 10c0/75bc9be5f9b7fbaa4fe7e74501b394a50b9e556bdb5fa6c32f7f3b855a36ba6adb1a09f92178f6aea44eb8e12de824c9074cf65e93759634161e83ce0cd28f18
   languageName: node
   linkType: hard
 
@@ -2072,7 +2072,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "vue3-thailand-address@workspace:."
   dependencies:
-    "@riz007/thai-address-data": "npm:^0.1.1"
+    "@riz007/thai-address-data": "npm:^0.1.4"
     "@types/node": "npm:^25.0.10"
     "@vitejs/plugin-vue": "npm:^6.0.3"
     typescript: "npm:^5.9.3"
