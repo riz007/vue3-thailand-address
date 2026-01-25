@@ -13,5 +13,13 @@ declare module "vitest" {
       factory: () => unknown,
       options?: { virtual?: boolean },
     ) => void;
+    spyOn: <T extends object, K extends keyof T>(
+      obj: T,
+      method: K,
+    ) => {
+      mockResolvedValue: (value: unknown) => void;
+      mockRejectedValue: (error: unknown) => void;
+      mockRestore: () => void;
+    };
   };
 }

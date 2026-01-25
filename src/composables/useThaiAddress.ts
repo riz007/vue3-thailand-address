@@ -1,4 +1,11 @@
-import { onBeforeUnmount, ref, shallowRef, unref, watch } from "vue";
+import {
+  getCurrentInstance,
+  onBeforeUnmount,
+  ref,
+  shallowRef,
+  unref,
+  watch,
+} from "vue";
 import type { Ref } from "vue";
 import { createThaiAddressIndex, searchThaiAddress } from "../core/search";
 import type {
@@ -117,12 +124,14 @@ export function useThaiAddress(options: UseThaiAddressOptions) {
     return formatted;
   };
 
-  onBeforeUnmount(() => {
-    if (debounceTimer) {
-      clearTimeout(debounceTimer);
-      debounceTimer = null;
-    }
-  });
+  if (getCurrentInstance()) {
+    onBeforeUnmount(() => {
+      if (debounceTimer) {
+        clearTimeout(debounceTimer);
+        debounceTimer = null;
+      }
+    });
+  }
 
   return {
     query,

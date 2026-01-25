@@ -7,9 +7,14 @@ const MISSING_DATASET_MESSAGE =
 const IMPORT_ERROR_PATTERN =
   /Cannot find module|Cannot find package|Failed to resolve|ERR_MODULE_NOT_FOUND|MODULE_NOT_FOUND/i;
 
+export const __internal = {
+  importDefaultDataset: () =>
+    import("@riz007/thai-address-data/data.json") as Promise<unknown>,
+};
+
 export async function loadDefaultThaiAddressData(): Promise<ThaiAddressRow[]> {
   try {
-    const module = await import("@riz007/thai-address-data/data.json");
+    const module = await __internal.importDefaultDataset();
     const data =
       (module as { default?: unknown }).default ??
       (module as unknown);
