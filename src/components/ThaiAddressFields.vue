@@ -169,7 +169,11 @@ const setOpen = (field: Field, next: boolean) => {
   }
 
   isOpen[field] = next;
-  emit(next ? "open" : "close", field);
+  if (next) {
+    emit("open", field);
+  } else {
+    emit("close", field);
+  }
 };
 
 const emitModelValue = () => {
