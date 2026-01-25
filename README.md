@@ -95,12 +95,35 @@ type ThaiAddressRow = {
 
 Zipcode is treated as a string during search (numeric inputs are coerced).
 
+## Optional default dataset
+
+This library is dataset-agnostic by default. You can either:
+
+- Pass your own dataset into the component/composable, or
+- Install the optional dataset package and load it on demand.
+
+Install the dataset:
+
+```bash
+yarn add @riz007/thai-address-data
+# or npm install @riz007/thai-address-data
+```
+
+Then load it lazily when you need it:
+
+```ts
+import { loadDefaultThaiAddressData } from "vue3-thailand-address";
+
+const data = await loadDefaultThaiAddressData();
+```
+
 ## Nuxt 3/4 notes
 
 - The package is SSR-safe and does not access `window` or `document` at import time.
 - Recommended patterns for large datasets:
   1. Load the dataset in a server plugin and provide it to the client (for example via `provide` or `useState`).
   2. Lazy import the dataset on the client inside `onMounted` or `if (process.client)` and pass it into the composable or component when ready.
+  3. Prefer lazy-loading `@riz007/thai-address-data` to avoid SSR cold-start memory overhead.
 
 ## Migration from vue-thailand-address (Vue 2)
 
