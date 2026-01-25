@@ -1,0 +1,45 @@
+{
+  "name": "vue3-thailand-address",
+  "version": "1.0.0",
+  "description": "A Vue 3 component for selecting Thai addresses with province, district, and sub-district options.",
+  "keywords": [
+    "vue3",
+    "thailand",
+    "address",
+    "component",
+    "province",
+    "district",
+    "sub-district"
+  ],
+  "author": "riz007",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build && yarn build:types",
+    "build:types": "vue-tsc -p tsconfig.build.json",
+    "prepublishOnly": "yarn build",
+    "test": "vitest run"
+  },
+  "peerDependencies": {
+    "vue": "^3.5.0"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^25.0.10",
+    "@vitejs/plugin-vue": "^6.0.3",
+    "typescript": "^5.9.3",
+    "vite": "^7.3.1",
+    "vitest": "^2.1.0",
+    "vue": "^3.5.27",
+    "vue-tsc": "^3.2.3"
+  }
+}
