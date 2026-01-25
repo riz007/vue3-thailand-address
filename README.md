@@ -70,6 +70,30 @@ function onInput(value: string) {
 }
 ```
 
+## Multi-field usage
+
+This component provides four linked inputs (subdistrict, district, province, zipcode).
+Selecting a suggestion fills all fields.
+
+```vue
+<script setup lang="ts">
+import { ref } from "vue";
+import { ThaiAddressFields } from "vue3-thailand-address";
+import type { ThaiAddressRow } from "vue3-thailand-address";
+
+const model = ref<ThaiAddressRow>({
+  subdistrict: "",
+  district: "",
+  province: "",
+  zipcode: "",
+});
+</script>
+
+<template>
+  <ThaiAddressFields v-model="model" :data="data" />
+</template>
+```
+
 ## Core search
 
 ```ts
@@ -150,6 +174,228 @@ yarn dev:demo
   1. Load the dataset in a server plugin and provide it to the client (for example via `provide` or `useState`).
   2. Lazy import the dataset on the client inside `onMounted` or `if (process.client)` and pass it into the composable or component when ready.
   3. Prefer lazy-loading `@riz007/thai-address-data` to avoid SSR cold-start memory overhead.
+
+## Vue 3 / Nuxt usage & customization (English)
+
+### 1) Vue 3 basic usage
+
+Use the ready-made UI components:
+
+```vue
+<script setup lang="ts">
+import { onMounted, ref } from "vue";
+import {
+  ThaiAddressAutocomplete,
+  ThaiAddressFields,
+  loadDefaultThaiAddressData,
+} from "vue3-thailand-address";
+import type { ThaiAddressRow } from "vue3-thailand-address";
+
+const query = ref("");
+const model = ref<ThaiAddressRow>({
+  subdistrict: "",
+  district: "",
+  province: "",
+  zipcode: "",
+});
+const data = ref<ThaiAddressRow[]>([]);
+
+onMounted(async () => {
+  try {
+    data.value = await loadDefaultThaiAddressData();
+  } catch {
+    data.value = [];
+  }
+});
+</script>
+
+<template>
+  <ThaiAddressAutocomplete v-model="query" :data="data" />
+  <ThaiAddressFields v-model="model" :data="data" />
+</template>
+```
+
+If you prefer full UI control, use the composable:
+
+```ts
+const { query, suggestions, search, select } = useThaiAddress({
+  data,
+  minChars: 2,
+  debounceMs: 150,
+  limit: 10,
+});
+```
+
+### 2) Nuxt 3 / 4 usage (SSR-friendly)
+
+Recommended: load the dataset once in a plugin and reuse it everywhere.
+
+`plugins/thai-address-data.ts`
+
+```ts
+import { loadDefaultThaiAddressData } from "vue3-thailand-address";
+import type { ThaiAddressRow } from "vue3-thailand-address";
+
+export default defineNuxtPlugin(async () => {
+  const state = useState<ThaiAddressRow[]>("thaiAddressData", () => []);
+  if (state.value.length) {
+    return;
+  }
+
+  try {
+    state.value = await loadDefaultThaiAddressData();
+  } catch {
+    state.value = [];
+  }
+});
+```
+
+Then in any component:
+
+```ts
+const data = useState<ThaiAddressRow[]>("thaiAddressData");
+```
+
+### 3) Customization details
+
+Data:
+
+- The library is dataset-agnostic. Provide your own rows in the shape:
+  `{ subdistrict, district, province, zipcode }`.
+- If you have legacy data from the Vue 2 package, convert it with:
+  `mapLegacyThailandAddressRows(legacyRows)`.
+
+Search:
+
+- `minChars`, `debounceMs`, and `limit` are available in both
+  `ThaiAddressAutocomplete` and `ThaiAddressFields`.
+- Zipcode queries are optimized and prioritized for numeric input.
+- Use `searchThaiAddress` directly if you want custom ranking or filters.
+
+UI:
+
+- `ThaiAddressAutocomplete` exposes slots: `option`, `no-results`.
+- You can control the input text with `formatInput` or in the composable with
+  `format`.
+- `ThaiAddressFields` provides `labels`, `placeholders`, `showLabels`, and
+  `disabled` props, plus a `select` event that returns the chosen suggestion.
+
+Frameworks / UI libraries:
+
+- For UI libraries (Vuetify, Element Plus, Naive UI, etc.), use the composable
+  to wire suggestions into their input components.
+- For SSR (Nuxt), lazy-load large datasets to keep server cold starts small.
+
+## วิธีใช้กับ Vue 3 / Nuxt และการปรับแต่ง (ภาษาไทย)
+
+### 1) ใช้กับ Vue 3 แบบพื้นฐาน
+
+ใช้คอมโพเนนต์ที่มีให้ได้ทันที:
+
+```vue
+<script setup lang="ts">
+import { onMounted, ref } from "vue";
+import {
+  ThaiAddressAutocomplete,
+  ThaiAddressFields,
+  loadDefaultThaiAddressData,
+} from "vue3-thailand-address";
+import type { ThaiAddressRow } from "vue3-thailand-address";
+
+const query = ref("");
+const model = ref<ThaiAddressRow>({
+  subdistrict: "",
+  district: "",
+  province: "",
+  zipcode: "",
+});
+const data = ref<ThaiAddressRow[]>([]);
+
+onMounted(async () => {
+  try {
+    data.value = await loadDefaultThaiAddressData();
+  } catch {
+    data.value = [];
+  }
+});
+</script>
+
+<template>
+  <ThaiAddressAutocomplete v-model="query" :data="data" />
+  <ThaiAddressFields v-model="model" :data="data" />
+</template>
+```
+
+ถ้าต้องการควบคุม UI เองทั้งหมด ใช้ composable:
+
+```ts
+const { query, suggestions, search, select } = useThaiAddress({
+  data,
+  minChars: 2,
+  debounceMs: 150,
+  limit: 10,
+});
+```
+
+### 2) ใช้กับ Nuxt 3 / 4 (รองรับ SSR)
+
+แนะนำให้โหลดข้อมูลครั้งเดียวใน plugin แล้วใช้ซ้ำทุกหน้า:
+
+`plugins/thai-address-data.ts`
+
+```ts
+import { loadDefaultThaiAddressData } from "vue3-thailand-address";
+import type { ThaiAddressRow } from "vue3-thailand-address";
+
+export default defineNuxtPlugin(async () => {
+  const state = useState<ThaiAddressRow[]>("thaiAddressData", () => []);
+  if (state.value.length) {
+    return;
+  }
+
+  try {
+    state.value = await loadDefaultThaiAddressData();
+  } catch {
+    state.value = [];
+  }
+});
+```
+
+จากนั้นในคอมโพเนนต์:
+
+```ts
+const data = useState<ThaiAddressRow[]>("thaiAddressData");
+```
+
+### 3) รายละเอียดการปรับแต่ง
+
+ข้อมูล (Dataset):
+
+- ไลบรารีนี้ไม่บังคับชุดข้อมูล คุณสามารถส่งข้อมูลของคุณเองได้ในรูปแบบ
+  `{ subdistrict, district, province, zipcode }`.
+- หากมีข้อมูลจากแพ็กเกจ Vue 2 เดิม ให้แปลงด้วย
+  `mapLegacyThailandAddressRows(legacyRows)`.
+
+การค้นหา:
+
+- ปรับ `minChars`, `debounceMs`, `limit` ได้ทั้งใน
+  `ThaiAddressAutocomplete` และ `ThaiAddressFields`.
+- คิวรีตัวเลข (รหัสไปรษณีย์) จะถูกจัดลำดับความสำคัญก่อน.
+- ใช้ `searchThaiAddress` ได้โดยตรงหากต้องการ filter หรือจัดอันดับเอง.
+
+UI:
+
+- `ThaiAddressAutocomplete` มีสล็อต `option`, `no-results`.
+- กำหนดรูปแบบข้อความในช่อง input ด้วย `formatInput` หรือใน composable ด้วย
+  `format`.
+- `ThaiAddressFields` รองรับ `labels`, `placeholders`, `showLabels`,
+  `disabled` และมี event `select` ให้ผลลัพธ์ที่เลือก.
+
+การทำงานร่วมกับ UI library:
+
+- หากใช้ Vuetify, Element Plus, Naive UI ฯลฯ แนะนำให้ใช้ composable
+  เพื่อผูกผลลัพธ์กับคอมโพเนนต์ของไลบรารีนั้นๆ ได้ตรงตามดีไซน์.
+- สำหรับ SSR (Nuxt) ควร lazy-load ชุดข้อมูลเพื่อไม่ให้เซิร์ฟเวอร์เริ่มต้นช้า.
 
 ## Migration from vue-thailand-address (Vue 2)
 

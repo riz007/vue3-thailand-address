@@ -2,6 +2,7 @@
 import { onMounted, ref } from "vue";
 import {
   ThaiAddressAutocomplete,
+  ThaiAddressFields,
   loadDefaultThaiAddressData,
 } from "vue3-thailand-address";
 import type {
@@ -10,9 +11,17 @@ import type {
 } from "vue3-thailand-address";
 
 const model = ref("");
+const fieldsModel = ref<ThaiAddressRow>({
+  subdistrict: "",
+  district: "",
+  province: "",
+  zipcode: "",
+});
 const data = ref<ThaiAddressRow[]>([]);
 const status = ref("Loading dataset...");
 const lastSelected = ref<ThaiAddressSuggestion | null>(null);
+const lastSelectedFields = ref<ThaiAddressSuggestion | null>(null);
+const lastSelectedField = ref<keyof ThaiAddressRow | null>(null);
 
 const fallbackData: ThaiAddressRow[] = [
   {
@@ -42,13 +51,20 @@ onMounted(async () => {
     status.value = "Loaded default dataset.";
   } catch {
     data.value = fallbackData;
-    status.value =
-      "Default dataset not installed. Using fallback sample rows.";
+    status.value = "Default dataset not installed. Using fallback sample rows.";
   }
 });
 
 const handleSelect = (suggestion: ThaiAddressSuggestion) => {
   lastSelected.value = suggestion;
+};
+
+const handleSelectFields = (payload: {
+  field: keyof ThaiAddressRow;
+  suggestion: ThaiAddressSuggestion;
+}) => {
+  lastSelectedField.value = payload.field;
+  lastSelectedFields.value = payload.suggestion;
 };
 </script>
 
@@ -66,8 +82,7 @@ const handleSelect = (suggestion: ThaiAddressSuggestion) => {
         :min-chars="2"
         :limit="8"
         placeholder="Start typing an address..."
-        @select="handleSelect"
-      >
+        @select="handleSelect">
         <template #option="{ suggestion }">
           <div class="demo-option">
             <strong>{{ suggestion.subdistrict }}</strong>
@@ -83,6 +98,24 @@ const handleSelect = (suggestion: ThaiAddressSuggestion) => {
     <section class="demo-panel">
       <h2>Selected</h2>
       <pre class="demo-output">{{ lastSelected }}</pre>
+    </section>
+
+    <section class="demo-panel">
+      <h2>Multi-field</h2>
+      <ThaiAddressFields
+        v-model="fieldsModel"
+        :data="data"
+        :min-chars="2"
+        :limit="6"
+        @select="handleSelectFields" />
+    </section>
+
+    <section class="demo-panel">
+      <h2>Selected (multi-field)</h2>
+      <p class="demo-note">Last picked from: {{ lastSelectedField ?? "-" }}</p>
+      <pre class="demo-output">{{ lastSelectedFields }}</pre>
+      <p class="demo-note">Current model:</p>
+      <pre class="demo-output">{{ fieldsModel }}</pre>
     </section>
   </div>
 </template>
@@ -128,5 +161,11 @@ const handleSelect = (suggestion: ThaiAddressSuggestion) => {
   border-radius: 8px;
   min-height: 60px;
   white-space: pre-wrap;
+}
+
+.demo-note {
+  margin: 6px 0;
+  color: #6b7280;
+  font-size: 13px;
 }
 </style>
