@@ -29,6 +29,7 @@
   },
   "scripts": {
     "dev": "vite",
+    "dev:demo": "vite --config vite.demo.config.mts",
     "build": "vite build && yarn build:types",
     "build:types": "vue-tsc -p tsconfig.build.json",
     "prepublishOnly": "yarn build",

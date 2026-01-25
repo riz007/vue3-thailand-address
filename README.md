@@ -123,6 +123,26 @@ If you only want the dataset loader entrypoint, you can also import:
 import { loadDefaultThaiAddressData } from "vue3-thailand-address/data";
 ```
 
+## Local demo (browser)
+
+Run the demo app to test the component in a browser:
+
+```bash
+yarn dev:demo
+```
+
+The demo tries to load `@riz007/thai-address-data` via `loadDefaultThaiAddressData()`. If the optional dataset is not installed, it falls back to a small sample dataset.
+
+## เดโมบนเบราว์เซอร์ (ภาษาไทย)
+
+ต้องการทดลองใช้งานบนเบราว์เซอร์อย่างรวดเร็ว สามารถรันเดโมได้ด้วยคำสั่ง:
+
+```bash
+yarn dev:demo
+```
+
+เดโมจะพยายามโหลดชุดข้อมูลจาก `@riz007/thai-address-data` ผ่าน `loadDefaultThaiAddressData()` หากไม่ได้ติดตั้งแพ็กเกจดังกล่าว ระบบจะใช้ชุดข้อมูลตัวอย่างขนาดเล็กแทนเพื่อให้ทดสอบได้ทันที
+
 ## Nuxt 3/4 notes
 
 - The package is SSR-safe and does not access `window` or `document` at import time.
