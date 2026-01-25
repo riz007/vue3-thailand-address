@@ -117,6 +117,12 @@ import { loadDefaultThaiAddressData } from "vue3-thailand-address";
 const data = await loadDefaultThaiAddressData();
 ```
 
+If you only want the dataset loader entrypoint, you can also import:
+
+```ts
+import { loadDefaultThaiAddressData } from "vue3-thailand-address/data";
+```
+
 ## Nuxt 3/4 notes
 
 - The package is SSR-safe and does not access `window` or `document` at import time.

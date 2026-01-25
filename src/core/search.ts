@@ -96,10 +96,11 @@ function startsWithAny(normalized: NormalizedRow, query: string): boolean {
   }
 
   return (
-    (normalized.subdistrict && normalized.subdistrict.startsWith(query)) ||
-    (normalized.district && normalized.district.startsWith(query)) ||
-    (normalized.province && normalized.province.startsWith(query)) ||
-    (normalized.zipcode && normalized.zipcode.startsWith(query))
+    (normalized.subdistrict.length > 0 &&
+      normalized.subdistrict.startsWith(query)) ||
+    (normalized.district.length > 0 && normalized.district.startsWith(query)) ||
+    (normalized.province.length > 0 && normalized.province.startsWith(query)) ||
+    (normalized.zipcode.length > 0 && normalized.zipcode.startsWith(query))
   );
 }
 
@@ -109,10 +110,11 @@ function includesAny(normalized: NormalizedRow, query: string): boolean {
   }
 
   return (
-    (normalized.subdistrict && normalized.subdistrict.includes(query)) ||
-    (normalized.district && normalized.district.includes(query)) ||
-    (normalized.province && normalized.province.includes(query)) ||
-    (normalized.zipcode && normalized.zipcode.includes(query))
+    (normalized.subdistrict.length > 0 &&
+      normalized.subdistrict.includes(query)) ||
+    (normalized.district.length > 0 && normalized.district.includes(query)) ||
+    (normalized.province.length > 0 && normalized.province.includes(query)) ||
+    (normalized.zipcode.length > 0 && normalized.zipcode.includes(query))
   );
 }
 

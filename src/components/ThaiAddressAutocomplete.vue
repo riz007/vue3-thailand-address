@@ -53,7 +53,11 @@ const setOpen = (next: boolean) => {
   }
 
   isOpen.value = next;
-  emit(next ? "open" : "close");
+  if (next) {
+    emit("open");
+  } else {
+    emit("close");
+  }
 };
 
 const updateIndex = (data: ThaiAddressRow[] | null | undefined) => {
