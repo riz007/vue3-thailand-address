@@ -3,6 +3,7 @@ import vue from "@vitejs/plugin-vue";
 import { resolve } from "node:path";
 
 export default defineConfig({
+  base: "/vue3-thailand-address/",
   root: resolve(__dirname, "demo"),
   plugins: [vue()],
   resolve: {

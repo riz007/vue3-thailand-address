@@ -2,6 +2,8 @@
 
 Thai address autocomplete for Vue 3 with a headless search core, a composable, and a minimal UI component. Designed for SSR, Nuxt, and large datasets.
 
+**Live demo:** [https://riz007.github.io/vue3-thailand-address/](https://riz007.github.io/vue3-thailand-address/)
+
 ## Installation
 
 ```bash
@@ -158,6 +160,8 @@ yarn dev:demo
 The demo tries to load `@riz007/thai-address-data` via `loadDefaultThaiAddressData()`. If the optional dataset is not installed, it falls back to a small sample dataset.
 
 ## เดโมบนเบราว์เซอร์ (ภาษาไทย)
+
+เดโม: [https://riz007.github.io/vue3-thailand-address/](https://riz007.github.io/vue3-thailand-address/)
 
 ต้องการทดลองใช้งานบนเบราว์เซอร์อย่างรวดเร็ว สามารถรันเดโมได้ด้วยคำสั่ง:
 
