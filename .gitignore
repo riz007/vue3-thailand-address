@@ -4,6 +4,7 @@ node_modules/
 # yarn/pnpm
 .pnp.*
 pnpm-debug.log*
+.yarn/install-state.gz
 
 # logs
 *.log
